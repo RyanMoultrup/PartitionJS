@@ -1,7 +1,7 @@
-import decorator from "decorator";
-import { default as quartile } from "quartile";
-import { default as divide } from "divide";
-import { default as quarter } from "quarter";
+import decorator from "./decorator.js";
+import { default as quartile } from "./quartile.js";
+import { default as divide } from "./divide.js";
+import { default as quarter } from "./quarter.js";
 
 /**
  * Base class for Partition.js
@@ -124,7 +124,7 @@ export default class Partition {
      * multiple arrays based on the registered add functions
      *
      * @param {Array} [data]
-     * @returns {Promise}
+     * @returns {Array}
      */
     split (data) {
         return this.callbacks.length ? this.#splitWithCallback(data) : this.#splitArray(data);

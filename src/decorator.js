@@ -1,6 +1,6 @@
-import sum from 'decorators/sum.js';
-import count from 'decorators/count.js';
-import avg from 'decorators/average.js';
+import sum from './decorators/sum.js';
+import count from './decorators/count.js';
+import avg from './decorators/average.js';
 
 const decorators = [
     sum,

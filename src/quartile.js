@@ -1,4 +1,4 @@
-import { default as median } from "@/lib/median";
+import { default as median } from "./median.js";
 export default (data) => {
     data.sort((a, b) => a - b);
 

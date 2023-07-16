@@ -1,15 +1,10 @@
-import Partition from "Partition";
-
-export { default as quartile } from "quartile";
-export { default as divide } from "divide";
-export { default as quarter } from "quarter";
+import Partition from "./Partition.js";
 
 /**
- * Partition is an array utility that will take in an array of
- * objects and partition them into separate arrays based on
- * registered callback functions that. If an item of the original
- * array passes the truth test of a callback function it will be
- * added to the partition that function creates
+ * Partition is an array utility that will take in an array of integers or an
+ * array of objects and partition them into separate arrays based on registered
+ * callback functions that. If an item of the original array passes the truth
+ * test of a callback function it will be added to the partition that function creates
  *
  * @example
  * const data = [
