@@ -1,4 +1,4 @@
-import { isArray, isObject, isInteger, isString, shouldReject, isValidData } from '../../src/helpers.js';
+import { isArray, isObject, isInteger, isFloat, isNumber, isString, shouldReject, isValidData } from '../../src/helpers.js';
 
 describe('helper functions', () => {
     test('isArray', () => {
@@ -23,6 +23,24 @@ describe('helper functions', () => {
         expect(isInteger(123.5)).toBe(false);
         expect(isInteger(null)).toBe(false);
         expect(isInteger([])).toBe(false);
+    });
+
+    test('isFloat', () => {
+        expect(isFloat(123.456)).toBe(true);
+        expect(isFloat(123)).toBe(false);
+        expect(isFloat('123.456')).toBe(false);
+        expect(isFloat([])).toBe(false);
+        expect(isFloat({})).toBe(false);
+        expect(isFloat(null)).toBe(false);
+    });
+
+    test('isNumber', () => {
+        expect(isNumber(123.456)).toBe(true); // float
+        expect(isNumber(123)).toBe(true); // integer
+        expect(isNumber('123')).toBe(false);
+        expect(isNumber([])).toBe(false);
+        expect(isNumber({})).toBe(false);
+        expect(isNumber(null)).toBe(false);
     });
 
     test('isString', () => {

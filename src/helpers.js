@@ -4,6 +4,10 @@ export const isObject = variable => typeof variable === 'object' && variable !==
 
 export const isInteger = variable => Number.isInteger(variable);
 
+export const isFloat = variable => Number(variable) === variable && variable % 1 !== 0;
+
+export const isNumber = variable => isFloat(variable) || isInteger(variable);
+
 export const isString = variable => typeof variable === 'string' || variable instanceof String;
 
 export const shouldReject = variable => !isInteger(variable);
