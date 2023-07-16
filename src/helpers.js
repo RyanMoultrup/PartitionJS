@@ -8,6 +8,8 @@ export const isFloat = variable => Number(variable) === variable && variable % 1
 
 export const isNumber = variable => isFloat(variable) || isInteger(variable);
 
+export const numericOnly = arr => arr.filter(i => isNumber(i));
+
 export const isString = variable => typeof variable === 'string' || variable instanceof String;
 
 export const shouldReject = variable => !isInteger(variable);
@@ -17,3 +19,5 @@ export const isValidData = variable => {
         throw new Error('PartitionJS input data must be an array.');
     }
 }
+
+export const sort = data => [...data].sort((a, b) => a - b);
