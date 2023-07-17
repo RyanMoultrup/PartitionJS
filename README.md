@@ -318,7 +318,7 @@ blondHair => [
     {"name": "Eric", "sex": "male", "hair": {"length": "short","color": "blonde"}}
 ]
 ```
-Separating mixed type array into partitions of the same type
+Partitioning a mixed type array into partitions of the same type
 
 ```javascript
 const arr = [
@@ -449,6 +449,136 @@ splitSum => [
         "partition": [11, 12],
         "sum": 23
     },
+    []
+]
+```
+
+### Count
+
+<a name="divide" href="#divide">#</a> partition().<b>count()</b>.add(...).add(...)
+
+When you call <code>count</code> as a modifier it will apply <code>addCount</code> to all your partitions.
+
+```javascript
+const nums = [1, 2, 2, 4, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+const splitCount = partition()
+        .count()
+        .add(i => i < 6)
+        .add(i => i > 5 && i < 11)
+        .add(i => i > 10 && i < 14)
+        .split(nums);
+```
+```
+splitCount => [
+    {
+        "partition": [1, 2, 2, 4, 1, 3, 4, 5],
+        "count": 8
+    },
+    {
+        "partition": [6, 7, 8, 9, 10],
+        "count": 5
+    },
+    {
+        "partition": [11, 12],
+        "count": 2
+    },
+    []
+]
+```
+
+### Avg
+
+<a name="divide" href="#divide">#</a> partition().<b>avg()</b>.add(...).add(...)
+
+When you call <code>avg</code> as a modifier it will add the average of each of your partitions as extra data in the return array.
+
+```javascript
+const nums = [1, 2, 2, 4, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+const splitAvg = partition()
+        .avg()
+        .add(i => i < 6)
+        .add(i => i > 5 && i < 11)
+        .add(i => i > 10 && i < 14)
+        .split(nums);
+```
+```
+splitAvg => [
+    {
+        "partition": [1, 2, 2, 4, 1, 3, 4, 5],
+        "avg": 2.75
+    },
+    {
+        "partition": [6, 7, 8, 9, 10],
+        "avg": 8
+    },
+    {
+        "partition": [11, 12],
+        "avg": 11.5
+    },
+    []
+]
+```
+
+All three modifiers can be used together.
+
+```javascript
+const nums = [1, 2, 2, 4, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+const splitAvgCountSum = partition()
+        .avg()
+        .count()
+        .sum()
+        .add(i => i < 6)
+        .add(i => i > 5 && i < 11)
+        .add(i => i > 10 && i < 14)
+        .split(nums);
+```
+```
+splitAvgCountSum => [
+    {
+        "partition": [1, 2, 2, 4, 1, 3, 4, 5],
+        "avg": 2.75,
+        "count": 8,
+        "sum": 22
+    },
+    {
+        "partition": [6, 7, 8, 9, 10],
+        "avg": 8,
+        "count": 5,
+        "sum": 40
+    },
+    {
+        "partition": [11, 12],
+        "avg": 11.5,
+        "count": 2,
+        "sum" 23
+    },
+    []
+]
+```
+
+Because PartitionJS returns an array you have access to the built in JavaScript array functions. If you wanted to implement
+your own modifiers this can be accomplished by mapping the results of <code>split</code>
+
+```javascript
+const nums = [1, 2, 2, 4, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+const splitMap = partition()
+        .add(i => i < 6)
+        .add(i => i > 5 && i < 11)
+        .add(i => i > 10 && i < 14)
+        .split(nums)
+        .map(partition => {
+            return partition.map(i => i * 2)
+        });
+```
+```
+splitMap => [
+    [2, 4, 4, 8, 2, 6, 8, 10],
+    [12, 14, 16, 18, 20],
+    [22, 24],
     []
 ]
 ```
