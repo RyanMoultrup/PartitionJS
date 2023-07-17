@@ -1,14 +1,101 @@
 # PartitionJS
-JavaScript Array utility that will take an array of objects and partition it into any number of arrays based on callback functions.
+PartitionJS is a JavaScript Array utility that will take an array of data and partition it into any number of arrays based on different criteria.
+The output is a 2D array where each array represents a partition of the original data that meets the criteria.
 
+## Basic Usage
+Import PartitionJs into the code you want to use it. By calling <code>partition</code> you'll have all the partitioning methods available
+to you. Each time you call <code>partition</code> a new instance is created that will retain any additional setting passed to the instance.
 ```javascript
-import partition from '../lib/Partition.js'
+import partition from "partition-js";
 
 const partitioner = partition()
 ```
-How this code works explained below. The order of the add methods is the order that the arrays will be indexed. The first add
+PartitionJS takes in a array. The array can contain any type of primitives.
+```javascript
+const arr1 = [1, 2, 3, 4] // This will work
+const arr2 = [1, [2], 3, 4] // this will work
+const arr3 = [1, [2, 3], 4] // this will work
+const arr4 = ['one', [2, 3], 4]; //this will work
+const arr5 = ['one', {two: 2, three:3}, 4, [5]] // this will work
+const arr6 = [
+    { one: 1 , type: 'int'},
+    { one: 2 , type: 'int'},
+    { one: "3" , type: 'string'},
+] // this will also work
+
+const obj = {
+    one: { one: 1 , type: 'int'},
+    two: { one: 2 , type: 'int'},
+    three: { one: "3" , type: 'string'},
+} // this will NOT work and will simplyi return an empty array
+```
+You can then divide any valid array into any number of partitions by calling <code>divide</code>. The second parameter passed to <code>divide</code> tells PartitionJS
+how many partitions to create from the array.
+```javascript
+const [partition1, partition2] = partition().divide([1, 2, 3, 4], 2)
+```
+```
+partition1 => [1, 2]
+partition2 => [3, 4]
+```
+## API Reference
+There are a number of ways that your data can be partitioned with PartitionJS.
+
+* [divide](#divide)
+* [quarter](#quarter)
+* [quartile](#quartile)
+* [split](#split)
+  * [add](#add)
+  * [addSum](#addSum)
+  * [addCount](#addCount)
+  * [sum](#sum)
+  * [count](#count)
+  * [avg](#avg)
+
+### Divide
+<a name="divide" href="#divide">#</a> partition().<b>divide</b>(<i>data, divisions</i>)
+
+The <code>divide</code> method is the most basic way to create partitions. When you call this method PartitionJS is going to simply split
+your data into the number of partitions specified and try and equally split your data between the partitions. 
+
+<code>divide</code> will divide your array into as many partitions as you want. However if you tell <code>divide</code> to create more partitions
+than the total size of your array empty arrays will be created in the additional division. 
+```javascript
+const data = [12, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1]
+const [partitionTwo1, partitionTwo2] = partition().divide(data, 2)
+const [partitionThree1, partitionThree2] = partition().divide(data, 3);
+```
+Will result in this
+```
+partitionTwo1 => [12, 2, 3, 4, 5, 6]
+partitionTwo2 => [7, 8, 9, 10, 11, 1]
+
+partitionThree1 => [12, 2, 3, 4]
+partitionThree2 => [5, 6, 7, 8]
+partitionThree3 => [9, 10, 11, 1]
+```
+{% note %}
+
+**Note:** When calling <code>divide</code> the array is NOT sorted before the partitions are created
+
+{% endnote %}
+
+Often data does not divide equally into a specific number of partitions. PartitionJS will distribute your data as equally as possible
+into each partition when the size of your array does not divide equally.
+```javascript
+const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const [D1, D2, D3, D4] = partition().divide(data, 4);
+```
+```
+D1 => [1, 2]
+D2 => [3, 4, 5]
+D3 => [6, 7]
+D4 => [8, 9, 10]
+```
+### Split
+The order of the add methods is the order that the arrays will be indexed. The first add
 method is index zero and so on. In the code below the data is being split into two arrays, one that contains all the females
-and the other the males. 
+and the other the males.
 
 If you wanted to split the data below into two array, one containing all the females and the other the males, this is 
 accomplished by calling the add method twice. Each add method takes a callback that lets PartitionJS know which object to add
