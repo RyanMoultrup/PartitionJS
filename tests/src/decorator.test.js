@@ -6,7 +6,7 @@ import avg from '../../src/decorators/average.js';
 // Mock the imported modules
 jest.mock('../../src/decorators/sum.js');
 jest.mock('../../src/decorators/count.js');
-jest.mock('../../src/decorators/average.test.js');
+jest.mock('../../src/decorators/average.js');
 
 describe('decorator', function() {
     it('should call the decorator functions with the correct arguments', function() {
