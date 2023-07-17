@@ -67,7 +67,7 @@ than the total size of your array empty arrays will be created in the additional
 ```javascript
 const data = [12, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1]
 const [partitionTwo1, partitionTwo2] = partition().divide(data, 2)
-const [partitionThree1, partitionThree2] = partition().divide(data, 3);
+const [partitionThree1, partitionThree2, partitionThree3] = partition().divide(data, 3);
 ```
 Will result in this
 ```
@@ -159,17 +159,16 @@ const data = [
 const [split1, split2] = partition().split(data)
 ```
 ```
-
 split1 =>  [
-  {"name": "John", "sex": "male", "height": "tall", "hair": {"length": "long", "color": "brown"}},
-  {"name": "Lindsay", "sex": "female", "height": "tall", "hair": {"length": "short", "color": "blonde"}}
-]
-split2 =>  [
-  {"name": "Eric", "sex": "male", "height": "tall", "hair": {"length": "short", "color": "blonde"}},
-  {"name": "Lucy", "sex": "female", "height": "short", "hair": {"length": "long", "color": "brown"}},
-  {"name": "Bill", "sex": "male", "height": "short", "hair": {"length": "long", "color": "brown"}}
+    {"name": "John", "sex": "male", "height": "tall", "hair": {"length": "long", "color": "brown"}},
+    {"name": "Lindsay", "sex": "female", "height": "tall", "hair": {"length": "short", "color": "blonde"}}
 ]
 
+split2 =>  [
+    {"name": "Eric", "sex": "male", "height": "tall", "hair": {"length": "short", "color": "blonde"}},
+    {"name": "Lucy", "sex": "female", "height": "short", "hair": {"length": "long", "color": "brown"}},
+    {"name": "Bill", "sex": "male", "height": "short", "hair": {"length": "long", "color": "brown"}}
+]
 ```
 The real power of the <code>split</code> method comes with the addition of the <code>add</code> method.
 
@@ -178,11 +177,11 @@ The real power of the <code>split</code> method comes with the addition of the <
 <a name="divide" href="#divide">#</a> partition().<b>add</b>(<i>callback</i>)
 
 The <code>add</code> method allows you to specify how many partitions you would like to create out of your data. It takes a callback
-function where you tell PartitionJS which array item you would like passed to each partition.
+function where you tell PartitionJS which array item you would like passed to each partition. Each item in your array is passed to 
+your callback function and if the item that passes your callback's truth test will be added to the partition.
 
 If you wanted to split the data below into two array, one containing all the females and the other the males, this is 
-accomplished by calling the add method twice. Each add method takes a callback that lets PartitionJS know which object to add
-to each array. Each item in your array will be passed to the callback function. If the callback return truthy the object will be added to that partition. 
+accomplished by calling the add method twice. 
 ```javascript
 const data = [
   {name: 'John', sex: 'male', hair: { length: 'long', color: 'brown' }},
@@ -233,46 +232,54 @@ const data = [
   {name: 'Bill', sex: 'male', hair: { length: 'long', color: 'brown' }}
 ];
 
-const [ males, females ]  = partition()
+const [ malesLongHair, femalesBrownHair ]  = partition()
   .add(i => i.sex === 'male' && i.hair.length === 'long')
   .add(i => i.sex === 'female' && i.hair.color === 'brown')
   .split(data)
-
-console.log('males', males)
-console.log('females', females)
 ```
 ```
-males => [
+malesLongHair => [
     {"name": "John","sex": "male", "hair": {"length": "long", "color": "brown"}},
     {"name": "Bill","sex": "male","height": "short","hair": {"length": "long","color": "brown"}}
 ]
 
-females => [
+femalesBrownHair => [
     {"name": "Lucy", "sex": "female", "hair": {"length": "long","color": "brown"}}
 ]
 ```
+
+You may have noticed in the previous example that the original data array had 5 objects in it but in the partitions results there are only
+3 total objects. This is because not all the objects in the original array pass the truth test for each partition registered
+with the <code>add</code> method. PartitionJS keeps track of all array items that didn't meet any criteria to go into a partition
+and returns them in another partition that holds all the rejected array items.
+
 ```javascript
-const [ males, females, rejected ]  = partition()
+const [ malesLongHair, femalesBrownHair, rejected ]  = partition()
   .add(i => i.sex === 'male' && i.hair.length === 'long')
   .add(i => i.sex === 'female' && i.hair.color === 'brown')
   .split(data)
-
-console.log('males', males)
-console.log('females', females)
-consol.log('rejected', rejected)
 ```
 ```
-males => [
+malesLongHair => [
     {"name": "John","sex": "male", "hair": {"length": "long", "color": "brown"}},
     {"name": "Bill","sex": "male","height": "short","hair": {"length": "long","color": "brown"}}
 ]
 
-females => [
+femalesBrownHair => [
     {"name": "Lucy", "sex": "female", "hair": {"length": "long","color": "brown"}}
 ]
+
+rejected => [
+    {name: 'Eric', sex: 'male', hair: { length: 'short', color: 'blonde' }},
+    {name: 'Lindsay', sex: 'female', hair: { length: 'short', color: 'blonde' }}
+]
 ```
-Each time you call add a new array will be created and all objects that meet the condition will be added to that array.
-Objects can belong to more than on of the returned arrays if they meet the condition of multiple callbacks.
+> **Note:** The final rejected partition is always passed as an additional partition even if it's just an empty array.
+
+Each time you call <code>add</code> a new partition will be created and all objects that meet the condition will be added to that array.
+<b>Objects can belong to more than one of the returned arrays if they meet the condition of multiple callbacks.</b> Keep note of this as you may
+end up with unwanted duplicate data in your partitions if your callbacks are not filtering the way you thought they would.
+
 ```javascript
 const data = [
   {name: 'John', sex: 'male', hair: { length: 'long', color: 'brown' }},
@@ -288,11 +295,6 @@ const [ males, females, shortHair, blondHair ]  = partition()
   .add(i => i.hair.length === 'short')
   .add(i => i.hair.color === 'blonde')
   .split(data)
-
-console.log('males', males)
-console.log('females', females)
-console.log('shortHair', shortHair)
-console.log('blondHair', blondHair)
 ```
 ```
 males => [
@@ -316,5 +318,137 @@ blondHair => [
     {"name": "Eric", "sex": "male", "hair": {"length": "short","color": "blonde"}}
 ]
 ```
+Separating mixed type array into partitions of the same type
 
+```javascript
+const arr = [
+    1, 2, 3, 14, [33, 34],
+    {n: 'jim'}, 5, 7, {n: 'jane'},
+    'type', 22, 25, 'cat', 4, 'caller'
+]
 
+const [ints, strings, objects] = partition()
+    .add(i => Number.isInteger(i))
+    .add(i => typeof i === 'string' || i instanceof String)
+    .add(i => typeof i === 'object' && i !== null && !Array.isArray(i))
+    .split(arr)
+```
+```
+ints => [1, 2, 3, 14, 5, 7, 22, 25, 4]
+stings => ['type', 'cat', 'caller']
+objects => [{n: 'jim'}, {n: 'jane'}]
+
+// rejected = [ [33, 34] ]
+```
+
+### AddCount
+
+<a name="divide" href="#divide">#</a> partition().<b>addCount</b>(<i>callback</i>)
+
+By calling the <code>addCount</code> method you'll get the count of the number of items in your partition returned along with the
+partition array.
+
+Building on the previous example we can create some of our partitions with the <code>addCount</code> method
+
+```javascript
+const arr = [
+    1, 2, 3, 14, [33, 34],
+    {n: 'jim'}, 5, 7, {n: 'jane'},
+    'type', 22, 25, 'cat', 4, 'caller'
+]
+
+const [ints, strings, objects] = partition()
+    .addCount(i => Number.isInteger(i))
+    .addCount(i => typeof i === 'string' || i instanceof String)
+    .add(i => typeof i === 'object' && i !== null && !Array.isArray(i))
+    .split(arr)
+```
+```
+ints => { partition: [1, 2, 3, 14, 5, 7, 22, 25, 4], count: 9 }
+stings => { partition: ['type', 'cat', 'caller'], count: 3 }
+objects => [{n: 'jim'}, {n: 'jane'}]
+
+// rejected = [ [33, 34] ]
+```
+The return from <code>split</code> when using <code>addCount</code> not destructured will look like this. PartitionJS will 
+only add the additional count data to partitions that use <code>addCount</code> and the rest will be unchanged.
+
+```
+[
+    { partition: [1, 2, 3, 14, 5, 7, 22, 25, 4], count: 9 },
+    { partition: ['type', 'cat', 'caller'], count: 3 },
+    [{n: 'jim'}, {n: 'jane'}],
+    [[33, 34]]
+]
+```
+> **Note:** Note that PartitionJS is still returning an array even though some items are now objects
+
+### AddSum
+
+<a name="divide" href="#divide">#</a> partition().<b>addSum</b>(<i>callback</i>)
+
+The <code>addSum</code> method is similar to <code>addCount</code> but it will sum up all the values of the partition and
+add that data to the returned partition. <code>addSum</code> only works with integers. If there are non-integer values in 
+a partition created with <code>addSum</code> they will be stripped out before the sum calculation takes place.
+
+```javascript
+const arr = [
+    1, 2, 3, 14, [33, 34],
+    {n: 'jim'}, 5, 7, {n: 'jane'},
+    'type', 22, 25, 'cat', 4, 'caller'
+]
+
+const [ints, strings, objects] = partition()
+    .addSum(i => Number.isInteger(i))
+    .addCount(i => typeof i === 'string' || i instanceof String)
+    .add(i => typeof i === 'object' && i !== null && !Array.isArray(i))
+    .split(arr)
+```
+```
+ints => { partition: [1, 2, 3, 14, 5, 7, 22, 25, 4], sum: 83 }
+stings => { partition: ['type', 'cat', 'caller'], count: 3 }
+objects => [{n: 'jim'}, {n: 'jane'}]
+
+// rejected = [ [33, 34] ]
+```
+
+## Modifiers
+
+Modifiers are additional methods that can be called in addition to <code>add</code>, <code>addSum</code>, and <code>addCount</code>. PartitionJS has 
+three modifiers that you can call to add additional data about your partition to each partition you create. 
+
+The three modifier in PartitionJS are <code>sum</code>, <code>count</code>, and <code>avg</code>.
+
+### Sum
+
+<a name="divide" href="#divide">#</a> partition().<b>sum()</b>.add(...).add(...)
+
+When you call <code>sum</code> as a modifier it will apply <code>addSum</code> to all your partitions.
+
+```javascript
+const nums = [1, 2, 2, 4, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+const splitSum = partition()
+        .sum()
+        .add(i => i < 6)
+        .add(i => i > 5 && i < 11)
+        .add(i => i > 10 && i < 14)
+        .split(nums);
+```
+```
+splitSum => [
+    {
+        "partition": [1, 2, 2, 4, 1, 3, 4, 5],
+        "sum": 22
+    },
+    {
+        "partition": [6, 7, 8, 9, 10],
+        "sum": 40
+    },
+    {
+        "partition": [11, 12],
+        "sum": 23
+    },
+    []
+]
+```
