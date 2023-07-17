@@ -52,6 +52,7 @@ There are a number of ways that your data can be partitioned with PartitionJS.
   * [add](#add)
   * [addSum](#addSum)
   * [addCount](#addCount)
+* [Modifiers](#modifiers)
   * [sum](#sum)
   * [count](#count)
   * [avg](#avg)
