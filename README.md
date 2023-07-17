@@ -213,16 +213,22 @@ females => [
     {"name": "Lucy", "sex": "female", "hair": {"length": "long","color": "brown"}}
 ]
 ```
-The order of the add methods is the order that the arrays will be indexed. The first add
+{% note %}
+
+**Note:** You must call any <code>add</code> methods before you call <code>split</code>.
+
+{% endnote %}
+
+The number of <code>add</code> methods that you call will determine the number of partitions that are created. Also the 
+order that you call the <code>add</code> methods is the order that the arrays will be indexed. The first add
 method is index zero and so on. In the code below the data is being split into two arrays, one that contains all the females
 and the other the males.
 
 You can add additional conditions to your callback function to get more granular control over which object goes into
 which array.
 
-Let's say you want more control over the data in the second array. With a typical partitioning scipt/package you're stuck
-with whatever happens to get rejected from the first partition. PartitionJS allows you control which objects goes into each
-array by calling add again. Now you're able partition the array to an array with all the males and another array with females 
+Let's say you want more control over the data in the second array. You can simply add additions conditions to you <code>add</code>
+methods and now you're able partition the array to an array with all the males with long hair and another array with females 
 that have brown hair
 ```javascript
 const data = [
