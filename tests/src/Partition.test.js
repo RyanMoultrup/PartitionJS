@@ -362,6 +362,29 @@ describe('partition', () => {
         ]);
     });
 
+    it('should create two empty arrays if called with no callbacks and an empty array is passed', () => {
+        const result = partition()
+            .split([]);
+
+        expect(result).toEqual( [
+            [],
+            []
+        ]);
+    });
+
+    it('should create the same number of empty arrays plus empty rejected array as add methods called when data is empty array', () => {
+        const result = partition()
+            .add(i => i.sex === 'male')
+            .add(i => i.sex === 'female')
+            .split([]);
+
+        expect(result).toEqual( [
+            [],
+            [],
+            []
+        ]);
+    });
+
     it('should log an exception to the console and return an empty array if an object is passed', () => {
         const obj = { oneTwo: {one:1, two: 2}, threeFour: {three: 3, four: 4} }
 
