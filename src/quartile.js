@@ -10,9 +10,9 @@ export default (data) => {
 
     return sortedData.reduce((partition, n) => {
         if (n <= Q1) partition[0].push(n);
-        else if (n > Q1 && n <= Q2) partition[1].push(n);
-        else if (n > Q2 && n <= Q3) partition[2].push(n);
-        else if (n > Q3) partition[3].push(n);
+        if (n > Q1 && n <= Q2) partition[1].push(n);
+        if (n > Q2 && n <= Q3) partition[2].push(n);
+        if (n > Q3) partition[3].push(n);
 
         return partition;
     }, [[], [], [], []]);

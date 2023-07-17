@@ -2,6 +2,7 @@ import decorator from "./decorator.js";
 import { default as quartile } from "./quartile.js";
 import { default as divide } from "./divide.js";
 import { default as quarter } from "./quarter.js";
+import { isValidData } from "./helpers.js";
 
 /**
  * Base class for Partition.js
@@ -127,6 +128,12 @@ export default class Partition {
      * @returns {Array}
      */
     split (data) {
-        return this.callbacks.length ? this.#splitWithCallback(data) : this.#splitArray(data);
+        try {
+            isValidData(data);
+            return this.callbacks.length ? this.#splitWithCallback(data) : this.#splitArray(data);
+        } catch (e) {
+            console.error(e.message);
+            return [];
+        }
     }
 }

@@ -1,4 +1,5 @@
 import partition from "../../src/index.js";
+import {isValidData} from "../../src/helpers.js";
 
 const data = [
     { name: 'John', sex: 'male', age: 34, height: 'tall', hair: { length: 'long', color: 'brown' }},
@@ -359,6 +360,95 @@ describe('partition', () => {
                 {"name": "Bill", "sex": "male", "age": 55, "height": "short", "hair": {"length": "long", "color": "brown"}}
             ]
         ]);
+    });
+
+    it('should log an exception to the console and return an empty array if an object is passed', () => {
+        const obj = { oneTwo: {one:1, two: 2}, threeFour: {three: 3, four: 4} }
+
+        console.error = jest.fn();
+
+        const result = partition()
+            .split(obj);
+
+        expect(result).toEqual( []);
+        expect(console.error).toHaveBeenCalledWith('PartitionJS input data must be an array.');
+    });
+
+    it('should log an exception to the console and return an empty array if a string is passed', () => {
+        const obj = 'Not going to work'
+
+        console.error = jest.fn();
+
+        const result = partition()
+            .split(obj);
+
+        expect(result).toEqual( []);
+        expect(console.error).toHaveBeenCalledWith('PartitionJS input data must be an array.');
+    });
+
+    it('should log an exception to the console and return an empty array if an integer is passed', () => {
+        const obj = 123
+
+        console.error = jest.fn();
+
+        const result = partition()
+            .split(obj);
+
+        expect(result).toEqual( []);
+        expect(console.error).toHaveBeenCalledWith('PartitionJS input data must be an array.');
+    });
+
+    it('should log an exception to the console and return an empty array if null is passed', () => {
+        console.error = jest.fn();
+
+        const result = partition()
+            .split(null);
+
+        expect(result).toEqual( []);
+        expect(console.error).toHaveBeenCalledWith('PartitionJS input data must be an array.');
+    });
+
+    it('should log an exception to the console and return an empty array if nothing is passed', () => {
+        console.error = jest.fn();
+
+        const result = partition()
+            .split();
+
+        expect(result).toEqual( []);
+        expect(console.error).toHaveBeenCalledWith('PartitionJS input data must be an array.');
+    });
+
+    it('should log an exception to the console and return an empty array if nothing is passed', () => {
+        console.error = jest.fn();
+
+        const result = partition()
+            .split();
+
+        expect(result).toEqual( []);
+        expect(console.error).toHaveBeenCalledWith('PartitionJS input data must be an array.');
+    });
+
+    it('should log an exception to the console and return partitions with an empty array in partition where user supplied callback failed', () => {
+        console.error = jest.fn();
+
+        const result = partition()
+            .add(i => i.sex === 'male')
+            .add(i => i.sex.category.type === 'female')
+            .split(data);
+
+        expect(result).toEqual( [
+            [
+                {"name": "John", "sex": "male", "age": 34, "height": "tall", "hair": {"length": "long", "color": "brown"}},
+                {"name": "Eric", "sex": "male", "age": 43, "height": "tall", "hair": {"length": "short", "color": "blonde"}},
+                {"name": "Bill", "sex": "male", "age": 55, "height": "short", "hair": {"length": "long", "color": "brown"}}
+            ],
+            [],
+            [
+                {"name": "Lindsay", "sex": "female", "age": 25, "height": "tall", "hair": {"length": "short", "color": "blonde"}},
+                {"name": "Lucy", "sex": "female", "age": 35, "height": "short", "hair": {"length": "long", "color": "brown"}}
+            ]
+        ]);
+        expect(console.error).toHaveBeenCalledWith('Cannot read properties of undefined (reading \'type\')');
     });
 
     // Add more tests for the other functions
