@@ -3,5 +3,5 @@ const average = arr => {
     return sum / arr.length;
 }
 export default (partition, { avg }) =>  {
-    return avg ? { ...partition, avg: average(partition.partition) } : partition;
+    return avg ? { ...partition, avg: average(partition.partition) } : { ...partition };
 }
