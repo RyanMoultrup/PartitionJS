@@ -78,11 +78,9 @@ partitionThree1 => [12, 2, 3, 4]
 partitionThree2 => [5, 6, 7, 8]
 partitionThree3 => [9, 10, 11, 1]
 ```
-{% note %}
 
 **Note:** When calling <code>divide</code> the array is NOT sorted before the partitions are created
 
-{% endnote %}
 
 Often data does not divide equally into a specific number of partitions. PartitionJS will distribute your data as equally as possible
 into each partition when the size of your array does not divide equally.
@@ -96,11 +94,9 @@ D2 => [3, 4, 5]
 D3 => [6, 7]
 D4 => [8, 9, 10]
 ```
-{% note %}
 
 **Note:** If you don't like how <code>divide</code> distributed your data into the partitions, you can use the <code>split</code> method to gain more control over what data goes in which partition.
 
-{% endnote %}
 ### Quarter
 
 <a name="divide" href="#divide">#</a> partition().<b>quarter</b>(<i>data</i>)
@@ -213,11 +209,9 @@ females => [
     {"name": "Lucy", "sex": "female", "hair": {"length": "long","color": "brown"}}
 ]
 ```
-{% note %}
 
 **Note:** You must call any <code>add</code> methods before you call <code>split</code>.
 
-{% endnote %}
 
 The number of <code>add</code> methods that you call will determine the number of partitions that are created. Also the 
 order that you call the <code>add</code> methods is the order that the arrays will be indexed. The first add
