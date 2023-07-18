@@ -2,6 +2,12 @@
 PartitionJS is a JavaScript Array utility that will take an array of data and partition it into any number of arrays based on different criteria.
 The output is a 2D array where each array represents a partition of the original data that meets the criteria.
 
+* [Basic Usage](#basic-usage)
+* [API Reference](#api-reference)
+* [Parallel Processing](#paralell-processing)
+* [Benchmarks](#benchmarks)
+* [Stability](#stability)
+
 ## Basic Usage
 Import PartitionJs into the code you want to use it. By calling <code>partition</code> you'll have all the partitioning methods available
 to you. Each time you call <code>partition</code> a new instance is created that will retain any additional setting passed to the instance.

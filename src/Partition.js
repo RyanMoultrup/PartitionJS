@@ -3,7 +3,12 @@ import { default as quartile } from "./quartile.js";
 import { default as divide } from "./divide.js";
 import { default as quarter } from "./quarter.js";
 import { isValidData } from "./helpers.js";
-import { Worker } from "worker_threads";
+import workerPath from './worker.js';
+IMPORT_WORKER_THREADS
+
+console.log('workerPath::', workerPath);
+
+// const workerPath = ;
 
 /**
  * Base class for Partition.js
@@ -18,14 +23,8 @@ export default class Partition {
             avg: false
         }
         this._count = false;
-        this.passed = [];
-        this.rejected = [];
         this.callbacks = [];
         this._workers = false;
-    }
-
-    #filterRejected () {
-        return [...new Set(this.rejected.filter(item => !this.passed.includes(item)))];
     }
 
     quartile (data) {
@@ -67,7 +66,7 @@ export default class Partition {
     #createPartitionsWithWorkers (data) {
         const promises = this.callbacks.map(callback => {
             return new Promise((resolve, reject) => {
-                const worker = new Worker('./callback-worker.js');
+                const worker = new Worker(workerPath);
                 worker.once('message', message => {
                     resolve(message);
                     worker.terminate();
