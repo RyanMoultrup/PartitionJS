@@ -33,5 +33,17 @@ export default [
             nodeResolve(),
             commonjs()
         ]
+    },
+    {
+        ...config,
+        output: {
+            ...config.output,
+            file: `dist/${meta.name}.cjs.js`,
+            format: 'cjs',
+        },
+        plugins: [
+            nodeResolve(),
+            commonjs()
+        ]
     }
 ]
