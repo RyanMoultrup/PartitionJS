@@ -3,6 +3,7 @@ import { default as quartile } from "./quartile.js";
 import { default as divide } from "./divide.js";
 import { default as quarter } from "./quarter.js";
 import { isValidData } from "./helpers.js";
+import { Worker } from "worker_threads";
 
 /**
  * Base class for Partition.js
@@ -20,6 +21,7 @@ export default class Partition {
         this.passed = [];
         this.rejected = [];
         this.callbacks = [];
+        this._workers = false;
     }
 
     #filterRejected () {
@@ -42,11 +44,7 @@ export default class Partition {
     #partitionReducer (callback) {
         return (partition, item) => {
             try {
-                if (callback.fn(item)) {
-                    partition.push(item);
-                    this.passed.push(item);
-                }
-                else this.rejected.push(item);
+                if (callback.fn(item)) partition.push(item);
             } catch (e) {
                 console.error(e.message);
             }
@@ -66,8 +64,29 @@ export default class Partition {
         }).map(partition => Object.keys(partition).length > 1 ? partition : partition.partition);
     }
 
+    #createPartitionsWithWorkers (data) {
+        const promises = this.callbacks.map(callback => {
+            return new Promise((resolve, reject) => {
+                const worker = new Worker('./callback-worker.js');
+                worker.once('message', message => {
+                    resolve(message);
+                    worker.terminate();
+                });
+                worker.once('error', reject);
+                worker.postMessage({ data, callback: callback.fn.toString() });
+            })
+        });
+
+        return Promise.all(promises)
+            .then(results => {
+                return results;
+            });
+    }
+
     #splitWithCallback (data) {
-         return [...this.#createPartitions(data), this.#filterRejected()];
+        return this._workers
+            ? this.#createPartitionsWithWorkers(data)
+            : this.#createPartitions(data);
     }
 
     #addCallback (fn) {
@@ -118,6 +137,11 @@ export default class Partition {
 
     divide (data, divisions) {
         return divide(data, divisions);
+    }
+
+    workers (bool) {
+        this._workers = bool;
+        return this;
     }
 
     /**
