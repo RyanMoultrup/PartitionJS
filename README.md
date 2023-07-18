@@ -175,7 +175,7 @@ The real power of the <code>split</code> method comes with the addition of the <
 
 ### Add
 
-<a name="divide" href="#divide">#</a> partition().<b>add</b>(<i>callback</i>)
+<a name="divide" href="#divide">#</a> partition().<b>add</b>(<i>callback</i>).split(...)
 
 The <code>add</code> method allows you to specify how many partitions you would like to create out of your data. It takes a callback
 function where you tell PartitionJS which array item you would like passed to each partition. Each item in your array is passed to 
@@ -249,34 +249,6 @@ femalesBrownHair => [
 ]
 ```
 
-You may have noticed in the previous example that the original data array had 5 objects in it but in the partitions results there are only
-3 total objects. This is because not all the objects in the original array pass the truth test for each partition registered
-with the <code>add</code> method. PartitionJS keeps track of all array items that didn't meet any criteria to go into a partition
-and returns them in another partition that holds all the rejected array items.
-
-```javascript
-const [ malesLongHair, femalesBrownHair, rejected ]  = partition()
-  .add(i => i.sex === 'male' && i.hair.length === 'long')
-  .add(i => i.sex === 'female' && i.hair.color === 'brown')
-  .split(data)
-```
-```
-malesLongHair => [
-    {"name": "John","sex": "male", "hair": {"length": "long", "color": "brown"}},
-    {"name": "Bill","sex": "male","height": "short","hair": {"length": "long","color": "brown"}}
-]
-
-femalesBrownHair => [
-    {"name": "Lucy", "sex": "female", "hair": {"length": "long","color": "brown"}}
-]
-
-rejected => [
-    {name: 'Eric', sex: 'male', hair: { length: 'short', color: 'blonde' }},
-    {name: 'Lindsay', sex: 'female', hair: { length: 'short', color: 'blonde' }}
-]
-```
-> **Note:** The final rejected partition is always passed as an additional partition even if it's just an empty array.
-
 Each time you call <code>add</code> a new partition will be created and all objects that meet the condition will be added to that array.
 <b>Objects can belong to more than one of the returned arrays if they meet the condition of multiple callbacks.</b> Keep note of this as you may
 end up with unwanted duplicate data in your partitions if your callbacks are not filtering the way you thought they would.
@@ -338,8 +310,6 @@ const [ints, strings, objects] = partition()
 ints => [1, 2, 3, 14, 5, 7, 22, 25, 4]
 stings => ['type', 'cat', 'caller']
 objects => [{n: 'jim'}, {n: 'jane'}]
-
-// rejected = [ [33, 34] ]
 ```
 
 ### AddCount
@@ -368,8 +338,6 @@ const [ints, strings, objects] = partition()
 ints => { partition: [1, 2, 3, 14, 5, 7, 22, 25, 4], count: 9 }
 stings => { partition: ['type', 'cat', 'caller'], count: 3 }
 objects => [{n: 'jim'}, {n: 'jane'}]
-
-// rejected = [ [33, 34] ]
 ```
 The return from <code>split</code> when using <code>addCount</code> not destructured will look like this. PartitionJS will 
 only add the additional count data to partitions that use <code>addCount</code> and the rest will be unchanged.
@@ -378,8 +346,7 @@ only add the additional count data to partitions that use <code>addCount</code> 
 [
     { partition: [1, 2, 3, 14, 5, 7, 22, 25, 4], count: 9 },
     { partition: ['type', 'cat', 'caller'], count: 3 },
-    [{n: 'jim'}, {n: 'jane'}],
-    [[33, 34]]
+    [{n: 'jim'}, {n: 'jane'}]
 ]
 ```
 > **Note:** Note that PartitionJS is still returning an array even though some items are now objects
@@ -409,8 +376,6 @@ const [ints, strings, objects] = partition()
 ints => { partition: [1, 2, 3, 14, 5, 7, 22, 25, 4], sum: 83 }
 stings => { partition: ['type', 'cat', 'caller'], count: 3 }
 objects => [{n: 'jim'}, {n: 'jane'}]
-
-// rejected = [ [33, 34] ]
 ```
 
 ## Modifiers
@@ -449,8 +414,7 @@ splitSum => [
     {
         "partition": [11, 12],
         "sum": 23
-    },
-    []
+    }
 ]
 ```
 
@@ -483,8 +447,7 @@ splitCount => [
     {
         "partition": [11, 12],
         "count": 2
-    },
-    []
+    }
 ]
 ```
 
@@ -517,8 +480,7 @@ splitAvg => [
     {
         "partition": [11, 12],
         "avg": 11.5
-    },
-    []
+    }
 ]
 ```
 
@@ -555,8 +517,7 @@ splitAvgCountSum => [
         "avg": 11.5,
         "count": 2,
         "sum" 23
-    },
-    []
+    }
 ]
 ```
 
@@ -579,7 +540,6 @@ const splitMap = partition()
 splitMap => [
     [2, 4, 4, 8, 2, 6, 8, 10],
     [12, 14, 16, 18, 20],
-    [22, 24],
-    []
+    [22, 24]
 ]
 ```
