@@ -3,7 +3,7 @@ import { default as quartile } from "./quartile.js";
 import { default as divide } from "./divide.js";
 import { default as quarter } from "./quarter.js";
 import { isValidData } from "./helpers.js";
-import addWorker from './workers/node.worker.js';
+import addWorker from 'worker:worker.js';
 
 // console.log('workerPath::', workerPath);
 
