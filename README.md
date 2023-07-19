@@ -32,7 +32,7 @@ To install from CDN add this to the <code>head</code> of your HTML.
 ```
 ```javascript
 <script>
-    const partitioner = partition()
+    var partitioner = partition()
 </script>
 ```
 
