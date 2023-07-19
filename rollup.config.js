@@ -1,10 +1,8 @@
 import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-// import replace from '@rollup/plugin-replace';
 import alias from "@rollup/plugin-alias";
-// import terser from '@rollup/plugin-terser';
+import terser from '@rollup/plugin-terser';
 import babel from '@rollup/plugin-babel';
-// import url from "rollup-plugin-url";
 
 const nodeConfig = {
     input: 'src/index.js',
@@ -14,11 +12,6 @@ const nodeConfig = {
         exports: 'auto',
     },
     plugins: [
-        // replace({
-        //     preventAssignment: true,
-        //     'IMPORT_WORKER_THREADS': "const { Worker } = require('worker_threads');",
-        //     // 'WORKER_FILE_PATH': './workers/node.worker.js'
-        // }),
         alias({
             entries: [
                 {
@@ -27,9 +20,6 @@ const nodeConfig = {
                 }
             ]
         }),
-        // url({
-        //     include: ['**/*.worker.js']
-        // }),
         nodeResolve({
             preferBuiltins: true,
         }),
@@ -45,7 +35,6 @@ const nodeConfig = {
                 }]
             ]
         }),
-        // terser()
     ]
 };
 
@@ -66,25 +55,44 @@ const webConfig = {
                 }
             ]
         }),
-        // nodeResolve({
-        //     browser: true,
-        //     preferBuiltins: false,
-        // }),
-        // commonjs(),
-        // babel({
-        //     babelHelpers: 'bundled',
-        //     exclude: 'node_modules/**',
-        //     presets: [
-        //         ['@babel/preset-env', {
-        //             targets: {
-        //                 browsers: '> 0.75%, not dead'
-        //             }
-        //         }]
-        //     ]
-        // }),
-        // terser()
     ]
 };
 
-export default [nodeConfig, webConfig];
-// export default nodeConfig;
+const cdnConfig = {
+    input: 'src/index.js',
+    output: {
+        file: 'dist/partitionjs.umd.min.js',
+        format: 'umd',
+        name: 'Partition',
+        exports: 'auto',
+    },
+    plugins: [
+        alias({
+            entries: [
+                {
+                    find: 'worker:worker.js',
+                    replacement: './workers/web.worker.js'
+                }
+            ]
+        }),
+        nodeResolve({
+            browser: true,
+            preferBuiltins: false,
+        }),
+        commonjs(),
+        babel({
+            babelHelpers: 'bundled',
+            exclude: 'node_modules/**',
+            presets: [
+                ['@babel/preset-env', {
+                    targets: {
+                        browsers: '> 0.75%, not dead'
+                    }
+                }]
+            ]
+        }),
+        terser()
+    ]
+};
+
+export default [nodeConfig, webConfig, cdnConfig];

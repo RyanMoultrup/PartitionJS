@@ -6,3 +6,6 @@ coverage
 .DS_Store
 .git
 .github
+rollup.config.js
+jest.config.cjs
+.babelrc
