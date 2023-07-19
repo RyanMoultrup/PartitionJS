@@ -2,11 +2,12 @@
 PartitionJS is a JavaScript Array utility that will take an array of data and partition it into any number of arrays based on different criteria.
 The output is a 2D array where each array represents a partition of the original data that meets the criteria.
 
+Genuine asychronous array manipulation is able to be achieved through the use of worker threads that are spawned by PartitionJS to do the heavy lifing outside of the main
+even loop executing the rest of your code. 
+
 * [Basic Usage](#basic-usage)
 * [API Reference](#api-reference)
-* [Parallel Processing](#paralell-processing)
-* [Benchmarks](#benchmarks)
-* [Stability](#stability)
+* [Parallel Processing](#parallel-processing)
 
 ## Basic Usage
 Import PartitionJs into the code you want to use it. By calling <code>partition</code> you'll have all the partitioning methods available
@@ -39,7 +40,8 @@ You can then divide any valid array into any number of partitions by calling <co
 how many partitions to create from the array.
 ```javascript
 const [partition1, partition2] = partition().divide([1, 2, 3, 4], 2)
-const [objPartition1, objPartition2] = partition().divide([{one: 1}, {two: 2}, {three: 3}, {four: 4}], 2)
+const [objPartition1, objPartition2] = partition()
+    .divide([{one: 1}, {two: 2}, {three: 3}, {four: 4}], 2)
 ```
 ```
 partition1 => [1, 2]
@@ -56,9 +58,10 @@ There are a number of ways that your data can be partitioned with PartitionJS.
 * [quartile](#quartile)
 * [split](#split)
   * [add](#add)
-  * [addSum](#addSum)
-  * [addCount](#addCount)
+  * [addSum](#addsum)
+  * [addCount](#addcount)
 * [Modifiers](#modifiers)
+  * [async](#async)
   * [sum](#sum)
   * [count](#count)
   * [avg](#avg)
@@ -602,3 +605,6 @@ splitMap => [
     [22, 24]
 ]
 ```
+
+## Parallel Processing
+PartitionJS is able to achieve real async operations on arrays by utilizing <code>Web Workers</code> when running in the browser and Node <code>Worker Threads</code> when running in Node.js. When the <code>async</code> modifier is used the actual processing of the array into paritions is handled in separate threads. This is accomplished by spawning workers that can do the heavy lifting off the main event loop and resolve the promise when execution has completed. This allows you to process large arrays asynchronously which is not possible with the JavaScript's built in array methods. 
