@@ -1,10 +1,10 @@
 import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import replace from '@rollup/plugin-replace';
-import alias from "@rollup/plugin-alias";
-import terser from '@rollup/plugin-terser';
+// import replace from '@rollup/plugin-replace';
+// import alias from "@rollup/plugin-alias";
+// import terser from '@rollup/plugin-terser';
 import babel from '@rollup/plugin-babel';
-import url from "rollup-plugin-url";
+// import url from "rollup-plugin-url";
 
 const nodeConfig = {
     input: 'src/index.js',
@@ -14,19 +14,19 @@ const nodeConfig = {
         exports: 'auto',
     },
     plugins: [
-        replace({
-            preventAssignment: true,
-            'IMPORT_WORKER_THREADS': "const { Worker } = require('worker_threads');",
-            // 'WORKER_FILE_PATH': './workers/node.worker.js'
-        }),
-        alias({
-            entries: [
-                { find: './worker.js', replacement: './workers/node.worker.js' }
-            ]
-        }),
-        url({
-            include: ['**/*.worker.js']
-        }),
+        // replace({
+        //     preventAssignment: true,
+        //     'IMPORT_WORKER_THREADS': "const { Worker } = require('worker_threads');",
+        //     // 'WORKER_FILE_PATH': './workers/node.worker.js'
+        // }),
+        // alias({
+        //     entries: [
+        //         { find: './worker.js', replacement: './workers/node.worker.js' }
+        //     ]
+        // }),
+        // url({
+        //     include: ['**/*.worker.js']
+        // }),
         nodeResolve({
             preferBuiltins: true,
         }),

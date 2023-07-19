@@ -3,10 +3,9 @@ import { default as quartile } from "./quartile.js";
 import { default as divide } from "./divide.js";
 import { default as quarter } from "./quarter.js";
 import { isValidData } from "./helpers.js";
-import workerPath from './worker.js';
-IMPORT_WORKER_THREADS
+import addWorker from './workers/node.worker.js';
 
-console.log('workerPath::', workerPath);
+// console.log('workerPath::', workerPath);
 
 // const workerPath = ;
 
@@ -65,14 +64,9 @@ export default class Partition {
 
     #createPartitionsWithWorkers (data) {
         const promises = this.callbacks.map(callback => {
-            return new Promise((resolve, reject) => {
-                const worker = new Worker(workerPath);
-                worker.once('message', message => {
-                    resolve(message);
-                    worker.terminate();
-                });
-                worker.once('error', reject);
-                worker.postMessage({ data, callback: callback.fn.toString() });
+            return new Promise(async (resolve, reject) => {
+                const partition = await addWorker({ data, callback: callback.fn.toString() });
+                resolve(partition);
             })
         });
 
