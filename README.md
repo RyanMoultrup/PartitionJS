@@ -23,7 +23,7 @@ npm install @rmoultrup/partitionjs
 
 To install from CDN add this to the <code>head</code> of your HTML.
 ```html
-<script src="https://cdn.jsdeliver.net/npm/partitionjs@0.0.1/dist/partitionjs.umd.min.js"></script>
+<script src="https://cdn.jsdeliver.net/npm/@rmoultrup/partitionjs@0.0.2/dist/partitionjs.umd.min.js"></script>
 ```
 ```javascript
 <script>
