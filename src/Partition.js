@@ -137,20 +137,32 @@ export default class Partition {
      * Accepts an array of data that will then be split into
      * multiple arrays based on the registered add functions
      *
+     * If no add methods have been called split will simply
+     * divide the array into two equal partitions
+     *
      * @param {Array} [data]
-     * @returns {Promise}
+     * @returns {Promise|Array}
      */
     split (data) {
-        return new Promise((resolve, reject) => {
-            try {
-                isValidData(data);
-                resolve(this.callbacks.length ? this.#splitWithCallback(data) : this.#splitArray(data));
-            } catch (e) {
-                reject(e);
-            }
-        }).catch(e => {
+        isValidData(data);
+        if (this._workers) {
+            new Promise((resolve, reject) => {
+                try {
+                    resolve(this.callbacks.length ? this.#splitWithCallback(data) : this.#splitArray(data));
+                } catch (e) {
+                    reject(e);
+                }
+            }).catch(e => {
+                console.error(e.message);
+                return [];
+            });
+        }
+
+        try {
+            return this.callbacks.length ? this.#splitWithCallback(data) : this.#splitArray(data);
+        } catch (e) {
             console.error(e.message);
             return [];
-        });
+        }
     }
 }
