@@ -144,7 +144,6 @@ export default class Partition {
      * @returns {Promise|Array}
      */
     split (data) {
-
         if (this._workers) {
             new Promise((resolve, reject) => {
                 isValidData(data);
