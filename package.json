@@ -20,8 +20,8 @@
     "default": "./src/index.js"
   },
   "module": "src/index.js",
-  "main": "dist/partitionjs.min.js",
-  "browser": "dist/partitionjs.js",
+  "main": "dist/partitionjs.node.js",
+  "browser": "dist/partitionjs.web.js",
   "devDependencies": {
     "@babel/core": "^7.22.9",
     "@babel/preset-env": "^7.22.9",

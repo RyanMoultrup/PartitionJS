@@ -15,8 +15,7 @@ function workerize (fn, workerOptions = {}) {
             const { workerData, parentPort } = require('worker_threads')
             Promise.resolve((${fn.toString()})(...workerData)).then(returnedData => {
               parentPort.postMessage(returnedData)
-            })
-          `, {...workerOptions, eval: true, workerData})
+            })`, {...workerOptions, eval: true, workerData})
 
             worker.on('message', resolve)
             worker.on('error', reject)
@@ -31,10 +30,10 @@ function workerize (fn, workerOptions = {}) {
     }
 }
 
-const addWorker = workerize(({ data, callback }) => {
+const spawnWorker = workerize(({ data, callback }) => {
     const filter = new Function('', `return ${callback}`)();
     const result = data.filter(item => filter(item));
     parentPort.postMessage(result);
 })
 
-export default addWorker;
+export default spawnWorker;

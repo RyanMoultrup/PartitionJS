@@ -10,12 +10,11 @@ function workerize(fn) {
     return function workerized(...workerData) {
         return new Promise((resolve, reject) => {
             const code = `
-        self.onmessage = ({data}) => {
-          Promise.resolve((${fn.toString()})(...data))
-            .then(result => postMessage(result))
-            .catch(err => console.error(err));
-        }
-      `;
+            self.onmessage = ({data}) => {
+              Promise.resolve((${fn.toString()})(...data))
+                .then(result => postMessage(result))
+                .catch(err => console.error(err));
+            }`;
             const blob = new Blob([code], { type: "application/javascript" });
             const worker = new Worker(URL.createObjectURL(blob));
 
@@ -23,16 +22,19 @@ function workerize(fn) {
                 resolve(data);
                 worker.terminate();
             };
-            worker.onerror = reject;
-
+            worker.onerror =({ data }) => {
+                console.error('Worked terminated with an error');
+                reject(data);
+                worker.terminate();
+            }
             worker.postMessage(workerData);
         });
     };
 }
 
-const addWorker = workerize(({ data, callback }) => {
+const spawnWorker = workerize(({ data, callback }) => {
     const filter = new Function('', `return ${callback}`)();
     return data.filter(item => filter(item));
 });
 
-export default addWorker;
+export default spawnWorker;

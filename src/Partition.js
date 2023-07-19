@@ -3,11 +3,7 @@ import { default as quartile } from "./quartile.js";
 import { default as divide } from "./divide.js";
 import { default as quarter } from "./quarter.js";
 import { isValidData } from "./helpers.js";
-import addWorker from 'worker:worker.js';
-
-// console.log('workerPath::', workerPath);
-
-// const workerPath = ;
+import spawnWorker from 'worker:worker.js';
 
 /**
  * Base class for Partition.js
@@ -65,7 +61,7 @@ export default class Partition {
     #createPartitionsWithWorkers (data) {
         const promises = this.callbacks.map(callback => {
             return new Promise(async (resolve, reject) => {
-                const partition = await addWorker({ data, callback: callback.fn.toString() });
+                const partition = await spawnWorker({ data, callback: callback.fn.toString() });
                 resolve(partition);
             })
         });
@@ -142,7 +138,7 @@ export default class Partition {
      * multiple arrays based on the registered add functions
      *
      * @param {Array} [data]
-     // * @returns {Promise}
+     * @returns {Promise}
      */
     split (data) {
         return new Promise((resolve, reject) => {
@@ -156,12 +152,5 @@ export default class Partition {
             console.error(e.message);
             return [];
         });
-        // try {
-        //     isValidData(data);
-        //     return this.callbacks.length ? this.#splitWithCallback(data) : this.#splitArray(data);
-        // } catch (e) {
-        //     console.error(e.message);
-        //     return [];
-        // }
     }
 }
