@@ -11,6 +11,15 @@
     "name": "Ryan Moultrup",
     "url": "https://github.com/RyanMoultrup"
   },
+  "keywords": [
+    "array utility",
+    "partition",
+    "node",
+    "browser",
+    "array partition",
+    "async array",
+    "javascript"
+  ],
   "files": [
     "dist/**/*.js",
     "src/**/*.js"
@@ -31,18 +40,15 @@
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-url": "^8.0.1",
+    "@rollup/plugin-replace": "^5.0.2",
     "babel-jest": "^29.6.1",
     "cross-env": "^7.0.3",
     "jest": "^29.6.1",
-    "mocha": "^10.2.0",
     "rollup": "^3.26.2"
   },
   "scripts": {
     "build:node": "cross-env BUILD_ENV=node rollup -c",
     "build": "cross-env BUILD_ENV=web rollup -c",
     "test": "jest --config=jest.config.cjs"
-  },
-  "dependencies": {
-    "@rollup/plugin-replace": "^5.0.2"
   }
 }
