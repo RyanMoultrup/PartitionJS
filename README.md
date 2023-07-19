@@ -3,21 +3,52 @@ PartitionJS is a JavaScript Array utility that will take an array of data and pa
 The output is a 2D array where each array represents a partition of the original data that meets the criteria.
 
 Genuine asychronous array manipulation is able to be achieved through the use of worker threads that are spawned by PartitionJS to do the heavy lifing outside of the main
-even loop executing the rest of your code. 
+even loop executing the rest of your code. Performing <code>async</code> operations is optional and can be switched on and off for optimal code performance. 
 
+* [Installation](#installation)
 * [Basic Usage](#basic-usage)
 * [API Reference](#api-reference)
 * [Parallel Processing](#parallel-processing)
 
+## Installation
+PartitionJS is a multi-environment package. It will work in Node as well as the browser. Modern ES6 syntax is used when working with modern JS frameworks like React, Vue, etc. Additionally 
+the build from the CDN is transpiled to work with legacy code direcly in HTML. 
+
+Whether you're working in Node or the browser, installation is the same. PartitionJS will automatically deliver the correct version of the code for your environment.
+
+Install from npm
+```
+npm install partitionjs
+```
+
+Install from Yarn
+```
+yarn install partitionjs
+```
+
+To install from CDN add this to the <code>head</code> of your HTML.
+```html
+<script src="https://cdn.jsdeliver.net/npm/partitionjs@0.0.1/dist/partitionjs.umd.min.js"></script>
+```
+```javascript
+<script>
+    const partitioner = partition()
+</script>
+```
+
 ## Basic Usage
 Import PartitionJs into the code you want to use it. By calling <code>partition</code> you'll have all the partitioning methods available
 to you. Each time you call <code>partition</code> a new instance is created that will retain any additional setting passed to the instance.
+
 ```javascript
-import partition from "partition-js";
+import partition from "partitionjs";
+const partition = require("partitionjs") // if you're using Node
 
 const partitioner = partition()
 ```
+
 PartitionJS takes in a array. The array can contain any type of primitives.
+
 ```javascript
 const arr1 = [1, 2, 3, 4] // This will work
 const arr2 = [1, [2], 3, 4] // this will work
@@ -36,8 +67,10 @@ const obj = {
     three: { one: "3" , type: 'string'},
 } // this will NOT work and will simplyi return an empty array
 ```
+
 You can then divide any valid array into any number of partitions by calling <code>divide</code>. The second parameter passed to <code>divide</code> tells PartitionJS
 how many partitions to create from the array.
+
 ```javascript
 const [partition1, partition2] = partition().divide([1, 2, 3, 4], 2)
 const [objPartition1, objPartition2] = partition()
@@ -50,6 +83,7 @@ partition2 => [3, 4]
 objPartition1 => [{one: 1}, {two: 2}]
 objPartition2 => [{three: 3}, {four: 4}]
 ```
+
 ## API Reference
 There are a number of ways that your data can be partitioned with PartitionJS.
 
@@ -394,10 +428,14 @@ The available modifier in PartitionJS are <code>async</code>, <code>sum</code>, 
 
 ### Async
 
+<a name="divide" href="#divide">#</a> partition().<b>async()</b>.add(...).add(...)
+
 The <code>async</code> modifier will make PartitionJS async. You can now <code>await</code> the response from PartitionJS or use <code>then</code>.
 
 In JavaScript, array methods are blocking operations, meaning code will wait until the array method has returned before continuing to execute. With PartitionJS you can do the same reduction
 on the array in a non-blocking async way. 
+
+> **Note:** Async is only currently available when using the <code>split</code> method. However, anything the other methods are doing can easily be achieved with <code>.add(...).split(data)</code>. The other methods are more convenience methods to not have to write additional code. 
 
 When reducing a really big array code execution will stop until <code>array.reduce</code> has finished.
 ```javascript
@@ -428,15 +466,15 @@ const reallyBigArray = [1, ... , 1000000]
 
 console.log('--- start ---');
 
-cpartition()
-        .workers(true)
-        .add(i => i < 33)
-        .add(i => i > 32 && i < 66)
-        .add(i => i > 67)
-        .split(bigAssArray)
-        .then(result => {
-          console.log('Partitions done processing');
-        });
+partition()
+    .async()
+    .add(i => i < 33)
+    .add(i => i > 32 && i < 66)
+    .add(i => i > 67)
+    .split(reallyBigArray)
+    .then(result => {
+      console.log('Partitions done processing');
+    });
 
 console.log('--- UI element loaded ---');
 ```
