@@ -1,6 +1,6 @@
 {
   "name": "@rmoultrup/partitionjs",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "Description": "Array utility for parsing JavaScript arrays into partitions",
   "type": "module",
   "repository": {
@@ -28,9 +28,9 @@
     "umd": "./dist/partition.cjs.js",
     "default": "./src/index.js"
   },
-  "module": "src/index.js",
+  "module": "dist/partitionjs.web.js",
   "main": "dist/partitionjs.node.js",
-  "browser": "dist/partitionjs.web.js",
+  "browser": "dist/partitionjs.umd.min.js",
   "devDependencies": {
     "@babel/core": "^7.22.9",
     "@babel/preset-env": "^7.22.9",
