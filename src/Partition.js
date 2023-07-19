@@ -144,9 +144,10 @@ export default class Partition {
      * @returns {Promise|Array}
      */
     split (data) {
-        isValidData(data);
+
         if (this._workers) {
             new Promise((resolve, reject) => {
+                isValidData(data);
                 try {
                     resolve(this.callbacks.length ? this.#splitWithCallback(data) : this.#splitArray(data));
                 } catch (e) {
@@ -159,6 +160,7 @@ export default class Partition {
         }
 
         try {
+            isValidData(data);
             return this.callbacks.length ? this.#splitWithCallback(data) : this.#splitArray(data);
         } catch (e) {
             console.error(e.message);
