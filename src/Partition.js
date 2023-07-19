@@ -142,15 +142,26 @@ export default class Partition {
      * multiple arrays based on the registered add functions
      *
      * @param {Array} [data]
-     * @returns {Array}
+     // * @returns {Promise}
      */
     split (data) {
-        try {
-            isValidData(data);
-            return this.callbacks.length ? this.#splitWithCallback(data) : this.#splitArray(data);
-        } catch (e) {
+        return new Promise((resolve, reject) => {
+            try {
+                isValidData(data);
+                resolve(this.callbacks.length ? this.#splitWithCallback(data) : this.#splitArray(data));
+            } catch (e) {
+                reject(e);
+            }
+        }).catch(e => {
             console.error(e.message);
             return [];
-        }
+        });
+        // try {
+        //     isValidData(data);
+        //     return this.callbacks.length ? this.#splitWithCallback(data) : this.#splitArray(data);
+        // } catch (e) {
+        //     console.error(e.message);
+        //     return [];
+        // }
     }
 }

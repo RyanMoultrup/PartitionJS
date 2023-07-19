@@ -53,7 +53,7 @@ const webConfig = {
     input: 'src/index.js',
     output: {
         file: 'dist/partitionjs.web.js',
-        format: 'umd',
+        format: 'esm',
         name: 'Partition',
         exports: 'auto',
     },
@@ -66,22 +66,22 @@ const webConfig = {
                 }
             ]
         }),
-        nodeResolve({
-            browser: true,
-            preferBuiltins: false,
-        }),
-        commonjs(),
-        babel({
-            babelHelpers: 'bundled',
-            exclude: 'node_modules/**',
-            presets: [
-                ['@babel/preset-env', {
-                    targets: {
-                        browsers: '> 0.75%, not dead'
-                    }
-                }]
-            ]
-        }),
+        // nodeResolve({
+        //     browser: true,
+        //     preferBuiltins: false,
+        // }),
+        // commonjs(),
+        // babel({
+        //     babelHelpers: 'bundled',
+        //     exclude: 'node_modules/**',
+        //     presets: [
+        //         ['@babel/preset-env', {
+        //             targets: {
+        //                 browsers: '> 0.75%, not dead'
+        //             }
+        //         }]
+        //     ]
+        // }),
         // terser()
     ]
 };

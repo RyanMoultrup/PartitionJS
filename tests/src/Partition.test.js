@@ -87,8 +87,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly splits array based on callbacks with empty rejected array', () => {
-        const result = partition()
+    it('should correctly splits array based on callbacks with empty rejected array', async () => {
+        const result = await partition()
             .add(i => i < 6)
             .add(i => i > 5 && i < 11)
             .add(i => i > 10 && i < 14)
@@ -101,8 +101,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly splits array based on callbacks and add sum to all results along with empty rejected array', () => {
-        const result = partition()
+    it('should correctly splits array based on callbacks and add sum to all results along with empty rejected array', async () => {
+        const result = await partition()
             .sum()
             .add(i => i < 6)
             .add(i => i > 5 && i < 11)
@@ -116,8 +116,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly splits array based on callbacks and add count to all results along with empty rejected array', () => {
-        const result = partition()
+    it('should correctly splits array based on callbacks and add count to all results along with empty rejected array', async () => {
+        const result = await partition()
             .count()
             .add(i => i < 6)
             .add(i => i > 5 && i < 11)
@@ -131,8 +131,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly splits array based on callbacks and add average to all results along with empty rejected array', () => {
-        const result = partition()
+    it('should correctly splits array based on callbacks and add average to all results along with empty rejected array', async () => {
+        const result = await partition()
             .avg()
             .add(i => i < 6)
             .add(i => i > 5 && i < 11)
@@ -146,8 +146,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly splits array based on callbacks and adds sum and count to all results along with empty rejected array', () => {
-        const result = partition()
+    it('should correctly splits array based on callbacks and adds sum and count to all results along with empty rejected array', async () => {
+        const result = await partition()
             .sum()
             .count()
             .add(i => i < 6)
@@ -162,8 +162,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly splits array based on callbacks and adds sum and average to all results along with empty rejected array', () => {
-        const result = partition()
+    it('should correctly splits array based on callbacks and adds sum and average to all results along with empty rejected array', async () => {
+        const result = await partition()
             .sum()
             .avg()
             .add(i => i < 6)
@@ -178,8 +178,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly splits array based on callbacks and adds count and average to all results along with empty rejected array', () => {
-        const result = partition()
+    it('should correctly splits array based on callbacks and adds count and average to all results along with empty rejected array', async () => {
+        const result = await partition()
             .count()
             .avg()
             .add(i => i < 6)
@@ -194,8 +194,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly splits array based on callbacks and adds count average and sum to all results along with empty rejected array', () => {
-        const result = partition()
+    it('should correctly splits array based on callbacks and adds count average and sum to all results along with empty rejected array', async () => {
+        const result = await partition()
             .count()
             .avg()
             .sum()
@@ -211,8 +211,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly splits array based on callbacks and adds count to middle partition along with empty rejected array', () => {
-        const result = partition()
+    it('should correctly splits array based on callbacks and adds count to middle partition along with empty rejected array', async () => {
+        const result = await partition()
             .add(i => i < 6)
             .addCount(i => i > 5 && i < 11)
             .add(i => i > 10 && i < 14)
@@ -225,8 +225,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly splits array based on callbacks and adds sum to middle partition along with empty rejected array', () => {
-        const result = partition()
+    it('should correctly splits array based on callbacks and adds sum to middle partition along with empty rejected array', async () => {
+        const result = await partition()
             .add(i => i < 6)
             .addSum(i => i > 5 && i < 11)
             .add(i => i > 10 && i < 14)
@@ -239,8 +239,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly splits array based on callbacks and adds sum and count to individual partitions along with empty rejected array', () => {
-        const result = partition()
+    it('should correctly splits array based on callbacks and adds sum and count to individual partitions along with empty rejected array', async () => {
+        const result = await partition()
             .addCount(i => i < 6)
             .addSum(i => i > 5 && i < 11)
             .add(i => i > 10 && i < 14)
@@ -253,8 +253,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly partition array of objects based on callbacks', () => {
-        const result = partition()
+    it('should correctly partition array of objects based on callbacks', async () => {
+        const result = await partition()
             .add(i => i.sex === 'male')
             .add(i => i.sex === 'female')
             .add(i => i.height === 'tall')
@@ -288,8 +288,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly partition array of objects and multiple conditions in callbacks', () => {
-        const result = partition()
+    it('should correctly partition array of objects and multiple conditions in callbacks', async () => {
+        const result = await partition()
             .add(i => i.sex === 'male' && i.hair.length === 'long')
             .add(i => i.sex === 'female' && i.hair.color === 'brown')
             .split(data);
@@ -305,8 +305,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should correctly partition array of objects and multiple conditions and count partition in callbacks', () => {
-        const result = partition()
+    it('should correctly partition array of objects and multiple conditions and count partition in callbacks', async () => {
+        const result = await partition()
             .addCount(i => i.sex === 'male' && i.hair.length === 'long')
             .add(i => i.sex === 'female' && i.hair.color === 'brown')
             .split(data);
@@ -325,8 +325,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should divide partition in half if only split is called with no callbacks', () => {
-        const result = partition()
+    it('should divide partition in half if only split is called with no callbacks', async () => {
+        const result = await partition()
             .split(data);
 
         expect(result).toEqual( [
@@ -342,8 +342,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should create two empty arrays if called with no callbacks and an empty array is passed', () => {
-        const result = partition()
+    it('should create two empty arrays if called with no callbacks and an empty array is passed', async () => {
+        const result = await partition()
             .split([]);
 
         expect(result).toEqual( [
@@ -352,8 +352,8 @@ describe('partition', () => {
         ]);
     });
 
-    it('should create the same number of empty arrays plus empty rejected array as add methods called when data is empty array', () => {
-        const result = partition()
+    it('should create the same number of empty arrays plus empty rejected array as add methods called when data is empty array', async () => {
+        const result = await partition()
             .add(i => i.sex === 'male')
             .add(i => i.sex === 'female')
             .split([]);
@@ -364,76 +364,76 @@ describe('partition', () => {
         ]);
     });
 
-    it('should log an exception to the console and return an empty array if an object is passed', () => {
+    it('should log an exception to the console and return an empty array if an object is passed', async () => {
         const obj = { oneTwo: {one:1, two: 2}, threeFour: {three: 3, four: 4} }
 
         console.error = jest.fn();
 
-        const result = partition()
+        const result = await partition()
             .split(obj);
 
         expect(result).toEqual( []);
         expect(console.error).toHaveBeenCalledWith('PartitionJS input data must be an array.');
     });
 
-    it('should log an exception to the console and return an empty array if a string is passed', () => {
+    it('should log an exception to the console and return an empty array if a string is passed', async () => {
         const obj = 'Not going to work'
 
         console.error = jest.fn();
 
-        const result = partition()
+        const result = await partition()
             .split(obj);
 
         expect(result).toEqual( []);
         expect(console.error).toHaveBeenCalledWith('PartitionJS input data must be an array.');
     });
 
-    it('should log an exception to the console and return an empty array if an integer is passed', () => {
+    it('should log an exception to the console and return an empty array if an integer is passed', async () => {
         const obj = 123
 
         console.error = jest.fn();
 
-        const result = partition()
+        const result = await partition()
             .split(obj);
 
         expect(result).toEqual( []);
         expect(console.error).toHaveBeenCalledWith('PartitionJS input data must be an array.');
     });
 
-    it('should log an exception to the console and return an empty array if null is passed', () => {
+    it('should log an exception to the console and return an empty array if null is passed', async () => {
         console.error = jest.fn();
 
-        const result = partition()
+        const result = await partition()
             .split(null);
 
         expect(result).toEqual( []);
         expect(console.error).toHaveBeenCalledWith('PartitionJS input data must be an array.');
     });
 
-    it('should log an exception to the console and return an empty array if nothing is passed', () => {
+    it('should log an exception to the console and return an empty array if nothing is passed', async () => {
         console.error = jest.fn();
 
-        const result = partition()
+        const result = await partition()
             .split();
 
         expect(result).toEqual( []);
         expect(console.error).toHaveBeenCalledWith('PartitionJS input data must be an array.');
     });
 
-    it('should log an exception to the console and return an empty array if nothing is passed', () => {
+    it('should log an exception to the console and return an empty array if nothing is passed', async () => {
         console.error = jest.fn();
 
-        const result = partition()
+        const result = await partition()
             .split();
 
         expect(result).toEqual( []);
         expect(console.error).toHaveBeenCalledWith('PartitionJS input data must be an array.');
     });
 
-    it('should log an exception to the console and return partitions with an empty array in partition where user supplied callback failed', () => {
+    it('should log an exception to the console and return partitions with an empty array in partition where user supplied callback failed', async () => {
         console.error = jest.fn();
 
-        const result = partition()
+        const result = await partition()
             .add(i => i.sex === 'male')
             .add(i => i.sex.category.type === 'female')
             .split(data);
