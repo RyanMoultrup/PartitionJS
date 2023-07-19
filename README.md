@@ -385,11 +385,64 @@ objects => [{n: 'jim'}, {n: 'jane'}]
 ```
 
 ## Modifiers
+Modifiers are additional methods that can be called that will modify all the other medhods available in PartitionJS in some way.
 
-Modifiers are additional methods that can be called in addition to <code>add</code>, <code>addSum</code>, and <code>addCount</code>. PartitionJS has 
-three modifiers that you can call to add additional data about your partition to each partition you create. 
+The available modifier in PartitionJS are <code>async</code>, <code>sum</code>, <code>count</code>, and <code>avg</code>.
 
-The three modifier in PartitionJS are <code>sum</code>, <code>count</code>, and <code>avg</code>.
+### Async
+
+The <code>async</code> modifier will make PartitionJS async. You can now <code>await</code> the response from PartitionJS or use <code>then</code>.
+
+In JavaScript, array methods are blocking operations, meaning code will wait until the array method has returned before continuing to execute. With PartitionJS you can do the same reduction
+on the array in a non-blocking async way. 
+
+When reducing a really big array code execution will stop until <code>array.reduce</code> has finished.
+```javascript
+const reallyBigArray = [1, ... , 1000000]
+
+console.log('--- start ---');
+
+const reduced = reallyBigArray.reduce((reducer, i) => {
+      if (i < 33) reducer[0].push(i)
+      else if (i => i > 32 && i < 66) reducer[1].push(i)
+      else if (i => i > 67) reducer[2].push(i)
+      return reducer
+    }, [[], [], []])
+
+console.log('array.reduce done processing');
+console.log('--- UI element loaded ---');
+```
+
+```
+'--- start ---'
+'array.reduce done processing'
+'--- UI element loaded ---'
+```
+
+With PartitionJS this same operation can be made asynchronous allowing execution to continue while the array is partitioned. 
+```javascript
+const reallyBigArray = [1, ... , 1000000]
+
+console.log('--- start ---');
+
+cpartition()
+        .workers(true)
+        .add(i => i < 33)
+        .add(i => i > 32 && i < 66)
+        .add(i => i > 67)
+        .split(bigAssArray)
+        .then(result => {
+          console.log('Partitions done processing');
+        });
+
+console.log('--- UI element loaded ---');
+```
+```
+'--- start ---'
+'--- UI element loaded ---'
+'Partitions done processing'
+```
+See the Paralell Processing section to lean more about how PartitionJS does async operations.
 
 ### Sum
 
