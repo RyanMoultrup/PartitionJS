@@ -128,8 +128,8 @@ export default class Partition {
         return divide(data, divisions);
     }
 
-    workers (bool) {
-        this._workers = bool;
+    async () {
+        this._workers = true;
         return this;
     }
 
