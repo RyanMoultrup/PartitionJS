@@ -36,8 +36,8 @@ Import PartitionJs into the code you want to use it. By calling <code>partition<
 to you. Each time you call <code>partition</code> a new instance is created that will retain any additional setting passed to the instance.
 
 ```javascript
-import partition from "partitionjs";
-const partition = require("partitionjs") // if you're using Node
+import partition from "@rmoultrup/partitionjs";
+const partition = require("@rmoultrup/partitionjs") // if you're using Node
 
 const partitioner = partition()
 ```
