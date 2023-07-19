@@ -18,12 +18,7 @@ Whether you're working in Node or the browser, installation is the same. Partiti
 
 Install from npm
 ```
-npm install partitionjs
-```
-
-Install from Yarn
-```
-yarn install partitionjs
+npm install @rmoultrup/partitionjs
 ```
 
 To install from CDN add this to the <code>head</code> of your HTML.

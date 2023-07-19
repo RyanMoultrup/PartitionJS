@@ -1,5 +1,5 @@
 {
-  "name": "partitionjs",
+  "name": "@rmoultrup/partitionjs",
   "version": "0.0.1",
   "Description": "Array utility for parsing JavaScript arrays into partitions",
   "type": "module",
