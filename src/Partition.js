@@ -66,10 +66,7 @@ export default class Partition {
             })
         });
 
-        return Promise.all(promises)
-            .then(results => {
-                return results;
-            });
+        return Promise.all(promises).then(results => results);
     }
 
     #splitWithCallback (data) {
