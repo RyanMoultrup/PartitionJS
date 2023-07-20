@@ -15,7 +15,7 @@ const nodeConfig = {
         alias({
             entries: [
                 {
-                    find: 'worker:worker.js',
+                    find: './workers/web.worker.js',
                     replacement: './workers/node.worker.js'
                 }
             ]
@@ -41,20 +41,14 @@ const nodeConfig = {
 const webConfig = {
     input: 'src/index.js',
     output: {
-        file: 'dist/partitionjs.web.js',
-        format: 'esm',
+        file: 'dist/partitionjs.web.cjs.js',
+        format: 'cjs',
         name: 'Partition',
         exports: 'auto',
     },
     plugins: [
-        alias({
-            entries: [
-                {
-                    find: 'worker:worker.js',
-                    replacement: './workers/web.worker.js'
-                }
-            ]
-        }),
+        commonjs(),
+        nodeResolve()
     ]
 };
 
@@ -67,14 +61,14 @@ const cdnConfig = {
         exports: 'auto',
     },
     plugins: [
-        alias({
-            entries: [
-                {
-                    find: 'worker:worker.js',
-                    replacement: './workers/web.worker.js'
-                }
-            ]
-        }),
+        // alias({
+        //     entries: [
+        //         {
+        //             find: 'worker:worker.js',
+        //             replacement: './workers/web.worker.js'
+        //         }
+        //     ]
+        // }),
         nodeResolve({
             browser: true,
             preferBuiltins: false,

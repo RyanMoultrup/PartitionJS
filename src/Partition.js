@@ -3,7 +3,7 @@ import { default as quartile } from "./quartile.js";
 import { default as divide } from "./divide.js";
 import { default as quarter } from "./quarter.js";
 import { isValidData } from "./helpers.js";
-import spawnWorker from 'worker:worker.js';
+import spawnWorker from './workers/web.worker.js';
 
 /**
  * Base class for Partition.js

@@ -24,7 +24,13 @@
     "dist/**/*.js",
     "src/**/*.js"
   ],
-  "module": "dist/partitionjs.web.js",
+  "exports": {
+    ".": {
+      "require": "./dist/partitionjs.web.cjs.js",
+      "import": "./src/index.js"
+    }
+  },
+  "module": "./src/index.js",
   "main": "dist/partitionjs.node.js",
   "browser": "dist/partitionjs.umd.min.js",
   "devDependencies": {
