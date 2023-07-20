@@ -50,10 +50,7 @@
     "rollup": "^3.26.2"
   },
   "scripts": {
-    "build:node": "cross-env BUILD_ENV=node rollup -c",
-    "build": "cross-env BUILD_ENV=web rollup -c",
-    "deploy": "npm pack && cd /home/ryan/roulette-trainer && npm install /home/ryan/code/partition/rmoultrup-partitionjs-0.0.7.tgz",
-    "deploy:node": "npm pack && cd /home/ryan/code/benchmark && npm install /home/ryan/code/partition/rmoultrup-partitionjs-0.0.7.tgz",
+    "build": "rollup -c",
     "test": "jest --config=jest.config.cjs"
   },
   "husky": {
