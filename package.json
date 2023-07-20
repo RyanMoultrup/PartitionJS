@@ -1,6 +1,6 @@
 {
   "name": "@rmoultrup/partitionjs",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "Description": "Array utility for parsing JavaScript arrays into partitions",
   "type": "module",
   "repository": {
@@ -26,12 +26,12 @@
   ],
   "exports": {
     ".": {
-      "require": "./dist/partitionjs.web.cjs.js",
+      "require": "./dist/partitionjs.node.cjs",
       "import": "./src/index.js"
     }
   },
   "module": "./src/index.js",
-  "main": "dist/partitionjs.node.js",
+  "main": "dist/partitionjs.node.cjs",
   "browser": "dist/partitionjs.umd.min.js",
   "devDependencies": {
     "@babel/core": "^7.22.9",
@@ -53,6 +53,7 @@
     "build:node": "cross-env BUILD_ENV=node rollup -c",
     "build": "cross-env BUILD_ENV=web rollup -c",
     "deploy": "npm pack && cd /home/ryan/roulette-trainer && npm install /home/ryan/code/partition/rmoultrup-partitionjs-0.0.7.tgz",
+    "deploy:node": "npm pack && cd /home/ryan/code/benchmark && npm install /home/ryan/code/partition/rmoultrup-partitionjs-0.0.7.tgz",
     "test": "jest --config=jest.config.cjs"
   },
   "husky": {

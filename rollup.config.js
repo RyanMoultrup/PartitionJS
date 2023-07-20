@@ -7,7 +7,7 @@ import babel from '@rollup/plugin-babel';
 const nodeConfig = {
     input: 'src/index.js',
     output: {
-        file: 'dist/partitionjs.node.js',
+        file: 'dist/partitionjs.node.cjs',
         format: 'cjs',
         exports: 'auto',
     },
