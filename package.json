@@ -52,10 +52,5 @@
   "scripts": {
     "build": "rollup -c",
     "test": "jest --config=jest.config.cjs"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run build && npm run deploy"
-    }
   }
 }
